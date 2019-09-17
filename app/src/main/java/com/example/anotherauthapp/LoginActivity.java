@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginBtn;
     private TextView registerLink;
     private ProgressBar loading;
-    private static String URL_LOGIN = "http://192.168.43.115/api/login.php";
+    private static String URL_LOGIN = "http://192.168.0.222/api/login.php";
     SessionManager sessionManager;
 
     @Override
@@ -59,6 +59,7 @@ public class LoginActivity extends AppCompatActivity {
                     email.setError("Email require");
                     password.setError("Password require");
                 }
+                System.out.println(inputEmail + " : " + inputPassword);
             }
         });
 
@@ -83,14 +84,16 @@ public class LoginActivity extends AppCompatActivity {
                             String success = jsonObject.getString("success");
                             JSONArray jsonArray = jsonObject.getJSONArray("login");
 
+
                             if(success.equals("1")){
                                 for (int i = 0; i < jsonArray.length(); i++){
                                     JSONObject object = jsonArray.getJSONObject(i);
                                     //Data from the db
                                     String name = object.getString("name").trim();
                                     String email = object.getString("email").trim();
+                                    String id = object.getString("id").trim();
 
-                                    sessionManager.createSession(name, email);
+                                    sessionManager.createSession(name, email, id);
 
                                     //Just for Testing (Uncomment to test)
                                     //Toast.makeText(LoginActivity.this, "Login Success. \n your name is "+name, Toast.LENGTH_SHORT).show();
